@@ -20,7 +20,7 @@ def getNickFromLine(line):
 def isProf( str ):
     if profanity.contains_profanity(str):
         nick = getNickFromLine(str)
-        return [nick,str]
+        return {'nick':nick, 'string': str}
     else:
         return False
 
@@ -36,12 +36,23 @@ def getNicks(file):
                 break
     return nicks
 
+# count lines spoken by nick 
+def countNickLines(file,allNicks):
+    with open(file) as fp:
+        while True:
+            line = fp.readline()
+            allNicks[getNickFromLine(line)] += 1 
+            if not line:
+                break
+    return allNicks
+
 if len(sys.argv) <= 1:
     print("forgot to supply file")
     sys.exit()
 
 # staaart
 all_nicks = getNicks(sys.argv[1])
+countnicks = countNickLines(sys.argv[1],getNicks(sys.argv[1]))
 
 #main loop
 with open(sys.argv[1]) as fp:
@@ -49,9 +60,12 @@ with open(sys.argv[1]) as fp:
         line = fp.readline()
         profRes= isProf(line)
         if profRes:
-            all_nicks[profRes[0]]+=1
+            all_nicks[profRes['nick']]+=1
         if not line:
             break 
 
+
+print("nick,number of profane lines,number of total lines,percentage per total lines")
 for i in all_nicks:
-    print(i,",",all_nicks[i])
+    percentage = all_nicks[i] / countnicks[i] * 100
+    print(i,",",all_nicks[i],",",countnicks[i],",",percentage)
