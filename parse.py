@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-
-import csv
 from pathlib import Path
 from better_profanity import profanity
-import re,json,sys
+import re,sys
 
 #get single nick from the line
 def getNickFromLine(line):
@@ -40,9 +38,10 @@ if len(sys.argv) <= 1:
     print("forgot to supply file")
     sys.exit()
 
-# staaart
+# start
 all_nicks = getNicks(sys.argv[1])
 count_nicks = getNicks(sys.argv[1])
+
 #main loop
 
 with open(sys.argv[1]) as fp:
@@ -54,9 +53,10 @@ with open(sys.argv[1]) as fp:
             all_nicks[profRes['nick']]+=1
         if not line:
             break 
-
+#Filter out nicks with less than 50 lines
+filtered_count_nicks=dict(filter(lambda val: val[1] > 50 , count_nicks.items()))
 
 print("nick,number of profane lines,number of total lines,percentage per total lines")
-for i in all_nicks:
-    percentage = all_nicks[i] / count_nicks[i] * 100
-    print(i,",",all_nicks[i],",",count_nicks[i],",",percentage)
+for i in filtered_count_nicks:
+    percentage = all_nicks[i] / filtered_count_nicks[i] * 100
+    print(i,",",all_nicks[i],",",filtered_count_nicks[i],",",percentage)

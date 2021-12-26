@@ -21,7 +21,9 @@ This might have false positives as someone might use a profane word, movie quote
 
 ## To-do
 
-- [ ] Fairer statistics depending on how much the person talks in the channel
+- [x] Fairer statistics depending on how much the person talks in the channel
 - [ ] Output graphs with time periods and the persons cursing volume
 - [ ] Prettify output in terminal
+- [x] Remove nicks with less than 50 lines
+- [ ] Add control, to merge different nicks if from same person
 
