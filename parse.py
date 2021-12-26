@@ -36,28 +36,19 @@ def getNicks(file):
                 break
     return nicks
 
-# count lines spoken by nick 
-def countNickLines(file,allNicks):
-    with open(file) as fp:
-        while True:
-            line = fp.readline()
-            allNicks[getNickFromLine(line)] += 1 
-            if not line:
-                break
-    return allNicks
-
 if len(sys.argv) <= 1:
     print("forgot to supply file")
     sys.exit()
 
 # staaart
 all_nicks = getNicks(sys.argv[1])
-countnicks = countNickLines(sys.argv[1],getNicks(sys.argv[1]))
-
+count_nicks = getNicks(sys.argv[1])
 #main loop
+
 with open(sys.argv[1]) as fp:
     while True:
         line = fp.readline()
+        count_nicks[getNickFromLine(line)]+=1
         profRes= isProf(line)
         if profRes:
             all_nicks[profRes['nick']]+=1
@@ -67,5 +58,5 @@ with open(sys.argv[1]) as fp:
 
 print("nick,number of profane lines,number of total lines,percentage per total lines")
 for i in all_nicks:
-    percentage = all_nicks[i] / countnicks[i] * 100
-    print(i,",",all_nicks[i],",",countnicks[i],",",percentage)
+    percentage = all_nicks[i] / count_nicks[i] * 100
+    print(i,",",all_nicks[i],",",count_nicks[i],",",percentage)
